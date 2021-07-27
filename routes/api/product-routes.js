@@ -1,20 +1,39 @@
-// const router = require('express').Router();
-// const { Product, Category, Tag, ProductTag } = require('../../models');
+const router = require('express').Router();
+const { Product, Category, Tag, ProductTag } = require('../../models');
 
 // // The `/api/products` endpoint
 
-// // get all products
-// router.get('/', (req, res) => {
-//   // find all products
-//   // be sure to include its associated Category and Tag data
-// });
+// get all products
+router.get('/', (req, res) => {
+    Product.findAll()
+    .then(dbProductData => res.json(dbProductData))
+    .catch(err => {
+        console.log(err);
+        res.status(500).json(err);
+      });
+  // find all products
+  // be sure to include its associated Category and Tag data
+});
 
 // // get one product
-// router.get('/:id', (req, res) => {
-//   // find a single product by its `id`
-//   // be sure to include its associated Category and Tag data
-// });
-
+router.get('/:id', (req, res) => {
+    Product.findOne({
+      where: {
+        id: req.params.id
+      }
+    })
+      .then(dbProductData => {
+        if (!dbProductData) {
+          res.status(404).json({ message: 'No user found with this id' });
+          return;
+        }
+        res.json(dbProductData);
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json(err);
+      });
+  });
 // // create new product
 // router.post('/', (req, res) => {
 //   /* req.body should look like this...

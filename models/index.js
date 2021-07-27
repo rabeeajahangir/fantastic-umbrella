@@ -1,6 +1,9 @@
 const Category = require('./Category');
+const Product = require('./Product');
+const ProductTag = require('./ProductTag');
+const Tag = require('./Tag');
 
-const User = require('./User');
+
 
 
 
@@ -36,7 +39,7 @@ Category.hasMany(Product, {
 
 // Tags belongToMany Products (through ProductTag)
 
-module.exports = { Category, Product};
+module.exports = { Category, Product, ProductTag, Tag};
 
 // Product
 //   Tag,
