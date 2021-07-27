@@ -1,7 +1,6 @@
 {
   "name": "fantastic-umbrella",
   "version": "1.0.0",
-  "description": "",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
@@ -17,5 +16,11 @@
     "express": "^4.17.1",
     "mysql2": "^2.2.5",
     "sequelize": "^6.6.5"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/rabeeajahangir/fantastic-umbrella/issues"
+  },
+  "homepage": "https://github.com/rabeeajahangir/fantastic-umbrella#readme",
+  "devDependencies": {},
+  "description": ""
 }
