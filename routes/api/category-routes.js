@@ -37,7 +37,7 @@ router.get('/:id', (req, res) => {
 //POST /api/category
 router.post('/', (req, res) => {
  Category.create({
-   category_name: req.body.username,
+   category_name: req.body.category_name,
  })
  .then(CategoryData => res.json(CategoryData))
  .catch(err => {
@@ -70,17 +70,17 @@ router.put('/:id', (req, res) => {
 
 //DELETE /api/category/1
 router.delete('/:id', (req, res) => {
-  Category.destroy({
+  Tag.destroy({
     where: {
       id: req.params.id
     }
   })
-  .then(CategoryData => {
-    if (!CategoryData) {
-      res.status(404).json({ message: 'No category found with this id'});
+  .then(TagData => {
+    if (!TagData) {
+      res.status(404).json({ message: 'No tag found with this id'});
       return;
     }
-    res.json(CategoryData);
+    res.json(TagData);
   })
   .catch(err => {
     console.log(err);
