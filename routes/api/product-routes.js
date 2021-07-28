@@ -1,16 +1,24 @@
 const router = require('express').Router();
 const { Product, Category, Tag, ProductTag } = require('../../models');
+const { associations } = require('../../models/Product');
 
 // // The `/api/products` endpoint
 
 // get all products
 router.get('/', (req, res) => {
-    Product.findAll()
+    Product.findAll(
+      model: Category,
+      attributes: ['id', 'category_name']
+    }, {
+      model: Tag,
+      attributes: ['id', 'tag_name']
+    }
+    )
     .then(dbProductData => res.json(dbProductData))
     .catch(err => {
         console.log(err);
         res.status(500).json(err);
-      });
+      
   // find all products
   // be sure to include its associated Category and Tag data
 });
@@ -24,7 +32,7 @@ router.get('/:id', (req, res) => {
     })
       .then(dbProductData => {
         if (!dbProductData) {
-          res.status(404).json({ message: 'No user found with this id' });
+          res.status(404).json({ message: 'No product found' });
           return;
         }
         res.json(dbProductData);
@@ -44,7 +52,13 @@ router.post('/', (req, res) => {
       tagIds: [1, 2, 3, 4]
     }
   */
-  Product.create(req.body)
+  Product.create(req.body,{
+    product_name: req.body.product_name,
+    price: req.body.price,
+    stock: req.body.stock,
+    tagIds: req.body.tagIds
+  }
+
     .then((product) => {
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
       if (req.body.tagIds.length) {
@@ -109,7 +123,21 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-  // delete one product by its `id` value
+ Product.destroy({
+   where: {
+     id: req.params.id
+   }
+ })
+ .then(dbProductData => {
+  if (!dbProductData) {
+    res.status(404).json({ message: 'No product found' });
+    return;
+  }
+  res.json(dbProductData);
+})
+.catch(err => {
+  console.log(err);
+  res.status(500).json(err)
 });
 
 module.exports = router;
