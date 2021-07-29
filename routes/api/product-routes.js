@@ -68,7 +68,7 @@ router.post('/', (req, res) => {
       price: req.body.price,
       stock: req.body.stock,
       category_id: req.body.tagIds,
-      tagIds: []
+      tagIds: req.body.tagIds
     }
   )
   
