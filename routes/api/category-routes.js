@@ -6,8 +6,16 @@ const { Category, Product } = require('../../models');
 
 // GET /api/category
 router.get('/', (req, res) => {
-  Category.findAll()
-    .then(CategoryData => res.json(CategoryData))
+  // console.log('in the get route');
+  Category.findAll(
+    {
+      include: [Product]
+    }
+  )
+    .then(CategoryData => {
+      // console.log("MY CATEGORY DATA", CategoryData);
+      res.json(CategoryData)
+    })
     .catch(err => {
       console.log(err);
       res.status(500).json(err);
@@ -19,7 +27,10 @@ router.get('/:id', (req, res) => {
   Category.findOne({
     where: {
       id: req.params.id
-    }
+    },
+    
+      include: [Product]
+  
   })
   .then(CategoryData => {
     if(!CategoryData) {
@@ -36,9 +47,9 @@ router.get('/:id', (req, res) => {
 
 //POST /api/category
 router.post('/', (req, res) => {
- Category.create({
-   category_name: req.body.category_name,
- })
+ Category.create(
+   req.body
+ )
  .then(CategoryData => res.json(CategoryData))
  .catch(err => {
    console.log(err);
@@ -70,17 +81,17 @@ router.put('/:id', (req, res) => {
 
 //DELETE /api/category/1
 router.delete('/:id', (req, res) => {
-  Tag.destroy({
+  Category.destroy({
     where: {
       id: req.params.id
     }
   })
-  .then(TagData => {
-    if (!TagData) {
-      res.status(404).json({ message: 'No tag found with this id'});
+  .then(CategoryData => {
+    if (!CategoryData) {
+      res.status(404).json({ message: 'No category found with this id'});
       return;
     }
-    res.json(TagData);
+    res.json(CategoryData);
   })
   .catch(err => {
     console.log(err);
